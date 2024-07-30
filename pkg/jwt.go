@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+var TokenTTL = time.Hour * 24 * 7
+
 type Claims struct {
 	UserId   uint   `json:"user_id"`
 	Username string `json:"username"`
@@ -20,12 +22,11 @@ type Claims struct {
 var privateKey = []byte(os.Getenv("JWT_SECRET"))
 
 func GenerateJwtToken(user *models.User) (string, error) {
-	tokenTTL := time.Hour * 24 * 7
 	claims := Claims{
 		UserId:   user.ID,
 		Username: user.Username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(tokenTTL)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TokenTTL)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 		},

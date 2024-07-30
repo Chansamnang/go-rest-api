@@ -41,7 +41,7 @@ func InitRedis() {
 }
 
 func (cache *CacheStruct) Set(key string, value interface{}, ttl time.Duration) error {
-	return cache.client.Set(cache.ctx, key, value, ttl*time.Second).Err()
+	return cache.client.Set(cache.ctx, key, value, ttl).Err()
 }
 
 func (cache *CacheStruct) Get(key string) (string, error) {

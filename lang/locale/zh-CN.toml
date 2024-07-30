@@ -1,3 +1,4 @@
 invalid_token = "无效令牌"
 invalid_user = "无效用户名或密码"
 permission_denied = "没有权限"
+too_many_request = "请求过多"

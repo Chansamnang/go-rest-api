@@ -1,3 +1,4 @@
 invalid_token = "invalid token"
 invalid_user = "invalid username or password"
 permission_denied = "permission denied"
+too_many_request = "too many request"

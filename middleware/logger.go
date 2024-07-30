@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-rest-api/internal/config"
+	"go-rest-api/pkg/tools"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"io"
@@ -28,7 +29,7 @@ func (rw *ResponseWriter) WriteString(s string) (int, error) {
 	return rw.ResponseWriter.WriteString(s)
 }
 
-func LoggerHandler() gin.HandlerFunc {
+func LoggerHandlerMiddleware() gin.HandlerFunc {
 	logger := config.Logger
 
 	return func(c *gin.Context) {
@@ -85,7 +86,7 @@ func LoggerHandler() gin.HandlerFunc {
 		}
 
 		fields := []zapcore.Field{
-			zap.String("remote_ip", c.ClientIP()),
+			zap.String("remote_ip", tools.GetClientIP(c.Request)),
 			zap.String("latency", time.Since(start).String()),
 			zap.String("host", req.Host),
 			zap.String("requests", fmt.Sprintf("%s %s", req.Method, req.RequestURI)),

@@ -47,8 +47,7 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 
-	//err = config.Cache.Set(models.UserToken+fmt.Sprintf("%v", user.ID), token, 24*60*60)
-	err = config.Cache.Set(models.UserToken+fmt.Sprintf("%v", user.ID), base64.StdEncoding.EncodeToString([]byte(token)), 24*60*60)
+	err = config.Cache.Set(models.UserToken+fmt.Sprintf("%v", user.ID), base64.StdEncoding.EncodeToString([]byte(token)), pkg.TokenTTL)
 	if err != nil {
 		config.Logger.Error("Error generating token", zap.Error(err))
 		return

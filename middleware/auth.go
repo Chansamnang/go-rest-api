@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-func CheckAuth() gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := pkg.GetTokenFromRequest(c)
 

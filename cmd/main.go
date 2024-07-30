@@ -39,8 +39,9 @@ func buildHandler() {
 
 	v1 := router.Group("/api")
 	// Middleware
-	v1.Use(middleware.LoggerHandler())
-	v1.Use(middleware.CheckAuth())
+	v1.Use(middleware.LoggerHandlerMiddleware())
+	v1.Use(middleware.AuthMiddleware())
+	v1.Use(middleware.RateLimitMiddleware())
 
 	controller.UserRegisterHandlers(v1)
 
