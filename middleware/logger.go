@@ -46,27 +46,31 @@ func LoggerHandlerMiddleware() gin.HandlerFunc {
 		// Reset the requests body so it can be read again
 		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
-		var bodyMap map[string]interface{}
-		err = json.Unmarshal(bodyBytes, &bodyMap)
-		if err != nil {
-			fmt.Println("Error unmarshalling JSON:", err)
-			return
-		}
+		var modifiedBodyBytes []byte
 
-		// List of keys to replace with empty string
-		keysToReplace := []string{"password", "token"}
-
-		// Replacing the values with an empty string if the keys exist
-		for _, key := range keysToReplace {
-			if _, exists := bodyMap[key]; exists {
-				bodyMap[key] = ""
+		if len(bodyBytes) > 0 {
+			var bodyMap map[string]interface{}
+			err = json.Unmarshal(bodyBytes, &bodyMap)
+			if err != nil {
+				fmt.Println("Error unmarshalling JSON:", err)
+				return
 			}
-		}
 
-		modifiedBodyBytes, err := json.Marshal(bodyMap)
-		if err != nil {
-			fmt.Println("Error marshalling JSON:", err)
-			return
+			// List of keys to replace with empty string
+			keysToReplace := []string{"password", "token"}
+
+			// Replacing the values with an empty string if the keys exist
+			for _, key := range keysToReplace {
+				if _, exists := bodyMap[key]; exists {
+					bodyMap[key] = ""
+				}
+			}
+
+			modifiedBodyBytes, err = json.Marshal(bodyMap)
+			if err != nil {
+				fmt.Println("Error marshalling JSON:", err)
+				return
+			}
 		}
 
 		// Wrap the response writer to capture the response body
