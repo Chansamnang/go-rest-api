@@ -57,8 +57,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		fmt.Println(permission)
-
 		user, err := repositories.UserRepository.GetUserById(claims.UserId)
 		if err != nil {
 			config.Logger.Error("[Query User] error", zap.Error(err))
@@ -66,7 +64,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if !hasPermission(user.Role.Permissions, permission) {
+		if permission == nil || !hasPermission(user.Role.Permissions, permission) {
 			pkg.ApiResponse(c, http.StatusForbidden, "permission_denied", "")
 			c.Abort()
 			return
