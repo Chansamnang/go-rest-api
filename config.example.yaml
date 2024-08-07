@@ -1,0 +1,15 @@
+app:
+  port: ":8080"
+  timezone: ""
+
+db:
+  host: ""
+  port:
+  user: ""
+  password: ""
+  database: ""
+
+redis:
+  host: ""
+  port:
+  pass: ""

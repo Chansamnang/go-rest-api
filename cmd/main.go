@@ -24,6 +24,12 @@ func main() {
 		return
 	}
 
+	config.Init()
+
+	fmt.Println("App config successful")
+
+	fmt.Printf("config %v %v %v", config.Config.AppConfig, config.Config.MySQLConfig, config.Config.RedisConfig)
+
 	config.InitDB()
 	config.InitRedis()
 	config.LoggerInit()
@@ -39,6 +45,7 @@ func buildHandler() {
 
 	v1 := router.Group("/api")
 	// Middleware
+	v1.Use(middleware.Cors())
 	v1.Use(middleware.LoggerHandlerMiddleware())
 	v1.Use(middleware.AuthMiddleware())
 	v1.Use(middleware.RateLimitMiddleware())
